@@ -31,39 +31,58 @@ class HTMLParser
 	end
 end
 
-class Frequency Analyzer
-	def initialize_containers
-		# some kind of storage for data
-		# list of all tags
+class FrequencyAnalyzer
+	def initialize(page)
+		@page = page
+	end
 
-			#LINKS
-			#<a> (link)
+	def link_count
+		@page.css("a").length
+	end
+	
+	def image_count
+		@page.css("img").length
+	end
 
-			#IMAGES
-			#<img>
+	def paragraph_count
+		@page.css("p").length
 
-			#WORDS
-			#<p>
-			#<h1>
-			# <h2>
-			# <h3>
-			# <h4>
+	end
 
-			#COMMENTS
+	def header_count
+		h1 = @page.css("h1").length
+		h2 = @page.css("h2").length
+		h3 = @page.css("h3").length
+		h4 = @page.css("h4").length
+		h1 + h2 + h3 + h4
+	end
 
+	def comment_count
+		@page.css(".comment").length
+	end
+	
+	def list_count
+		@page.css("ul").length
+	end
 
-			#LISTS
-			#<ul>
-			#<li>
+	def list_item_count
+		@page.css("li").length
+	end
 
-			#DATA
-			#<table>
+	def table_count
+		@page.css("table").length
+	end
 
 
 	end
 
 	def count_tags
-		# returns collection of counts
+		keys = [:link, :image, :paragraph, :comment, :list, :list_item, :table_count]
+		keys.each do |key|
+			{key => }
+		end
+		# returns a hash
+		# key: value, element_count: integer
 	end
 end
 

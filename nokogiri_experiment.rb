@@ -8,3 +8,6 @@ puts links.length   # number of links
 
 images = page.css("img")  # finding all images
 puts images.length        # number images
+
+comments = page.css(".comment")  # finding all comments
+puts comments.length        # number comments

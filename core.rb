@@ -1,6 +1,14 @@
+require 'uri'
+
 class WebsiteFetcher
-	def self.get_console_input()
-		# verify well formed, raise if not
+	def self.get_console_input(user_url)
+		html_string = user_url.join(" | ")
+		uri_string = html_string.slice(URI.regexp)
+		p uri_string
+		uri = URI.new(uri_string)
+		p uri.to_s
+		uri.to_s
+
 	end
 
 	def self.send_to_html_parser
@@ -9,14 +17,14 @@ class WebsiteFetcher
 end
 
 class HTMLParser
-	def kick_to_nokogiri
+	def self.kick_to_nokogiri
 		# return fat_blob -> is a file (filename?)
 		# Nokogiri::HTML::Document?
 		# or just access from the web?
 		# verify nokogiri success
 	end
 
-	def send_to_CSS_selector
+	def self.send_to_CSS_selector
 		#return stripped sections
 	end
 end
@@ -47,10 +55,12 @@ class Frequency Analyzer
 end
 
 class Display
-	def console_output
+	def self.console_output
 	end
 
-	def js_spit_friendly
+	def self.js_spit_friendly
 		raise NoMethodError "not implemented in release 0"
 	end
 end
+
+WebsiteFetcher.get_console_input($*)

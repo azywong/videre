@@ -1,3 +1,7 @@
+require 'nokogiri'
+require 'open-uri'
+### Dear teammates, make sure to update your ruby version to be compatible with above : )
+
 class WebsiteFetcher
 	def self.get_console_input()
 		# verify well formed, raise if not
@@ -25,22 +29,33 @@ class Frequency Analyzer
 	def initialize_containers
 		# some kind of storage for data
 		# list of all tags
+
+			#LINKS
 			#<a> (link)
-			#<br>
-			#<center>
-			#<div>
-			#<em>
-			#<head>
-			#<h1><h2><...>
-			#<i> italics
+
+			#IMAGES
 			#<img>
+
+			#WORDS
 			#<p>
-			#<span>
-			#<strong>
+			#<h1>
+			# <h2>
+			# <h3>
+			# <h4>
+
+			#COMMENTS
+
+
+			#LISTS
+			#<ul>
+			#<li>
+
+			#DATA
 			#<table>
-			#<ul><li>
+
+
 	end
-	
+
 	def count_tags
 		# returns collection of counts
 	end

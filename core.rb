@@ -17,6 +17,7 @@ class WebsiteFetcher
 	end
 end
 
+
 class FrequencyAnalyzer
 	def initialize(page)
 		@page = page
@@ -25,7 +26,7 @@ class FrequencyAnalyzer
 	def link_count
 		@page.css("a").length
 	end
-	
+
 	def image_count
 		@page.css("img").length
 	end
@@ -45,7 +46,7 @@ class FrequencyAnalyzer
 	def comment_count
 		@page.css(".comment").length
 	end
-	
+
 	def list_count
 		@page.css("ul").length
 	end
@@ -62,25 +63,47 @@ class FrequencyAnalyzer
 	end
 
 	def count_tags
-		keys = [:link, :image, :paragraph, :comment, :list, :list_item, :table_count]
-		keys.each do |key|
-			{key => }
-		end
+		data.link_count
+		data.image_count
+		data.paragraph_count
+		data.header_count
+		data.comment_count
+		data.list_count
+		data.list_item_count
+		data.table_count
+	end
 		# returns a hash
 		# key: value, element_count: integer
 	end
 end
 
-class Display
-	def self.console_output
-	end
+# class Display
+# 	def self.console_output
+# 	end
 
-	def self.js_spit_friendly
-		raise NoMethodError "not implemented in release 0"
-	end
-end
+# 	def self.js_spit_friendly
+# 		raise NoMethodError "not implemented in release 0"
+# 	end
+# end
 
 WebsiteFetcher.get_console_input($*)
+
+#####################
+##Testing############
+#####################
+
+# test page
+# page = Nokogiri::HTML(open('http://www.huffingtonpost.com'))
+
+data = FrequencyAnalyzer.new(page)
+p data.link_count
+p data.image_count
+p data.paragraph_count
+p data.header_count
+p data.comment_count
+p data.list_count
+p data.list_item_count
+p data.table_count
 
 def assert
 	raise 'assertion failed' unless yield

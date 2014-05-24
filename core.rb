@@ -17,19 +17,6 @@ class WebsiteFetcher
 	end
 end
 
-class HTMLParser
-	def self.kick_to_nokogiri
-		# return fat_blob -> is a file (filename?)
-		# Nokogiri::HTML::Document?
-		# or just access from the web?
-		# verify nokogiri success
-	end
-
-	def self.send_to_CSS_selector
-		#return stripped sections
-	end
-end
-
 class FrequencyAnalyzer
 	def initialize(page)
 		@page = page

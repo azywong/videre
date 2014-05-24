@@ -6,10 +6,11 @@ class WebsiteFetcher
 	def self.get_console_input(user_url)
 		raise ArgumentError, "please put a URL together with the command to run the program" if user_url==[]
 		consolidated_input = user_url.join(" | ")
-		uri_string = consolidated_input.slice(URI.regexp(['http','https']))
-		p uri_string
-		uri = URI(uri_string)
-		@universal_record_locator = uri.to_s
+		uri_strings = URI.extract(consolidated_input)    #raise ArgumentError, 'please put in a well formed URL'
+		p uri_strings
+		raise ArgumentError, 'please only provide one URL' if uri_strings.length > 1
+		@universal_record_locator = uri_strings[0]
+		p @universal_record_locator
 	end
 
 	def self.send_to_html_parser
@@ -58,17 +59,14 @@ class FrequencyAnalyzer
 		@page.css("table").length
 	end
 
-
-	end
-
-	def count_tags
-		keys = [:link, :image, :paragraph, :comment, :list, :list_item, :table_count]
-		keys.each do |key|
-			{key => }
-		end
-		# returns a hash
-		# key: value, element_count: integer
-	end
+	# def count_tags
+	# 	keys = [:link, :image, :paragraph, :comment, :list, :list_item, :table_count]
+	# 	keys.each do |key|
+	# 		{key => }
+	# 	end
+	# 	# returns a hash
+	# 	# key: value, element_count: integer
+	# end
 end
 
 class Display

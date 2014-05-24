@@ -3,20 +3,25 @@ require 'open-uri'
 ### Dear teammates, make sure to update your ruby version to be compatible with above : )
 
 class WebsiteFetcher
-	def self.get_console_input(user_url)
-		raise ArgumentError, "please put a URL together with the command to run the program" if user_url==[]
-		consolidated_input = user_url.join(" | ")
-		p consolidated_input
-		uri_strings = URI.extract(consolidated_input) raise ArgumentError, 'please put in a URL using HTTP:// or HTTPS://'
-		p uri_strings
-		raise ArgumentError, 'please only provide one URL' if uri_strings.length > 1
-		p uri_strings[0]
-		@universal_record_locator = uri_strings[0]
+	class << self
+		attr_reader :universal_record_locator
 	end
 
-	def self.send_to_html_parser
-		HTMLParser.kick_to_nokogiri(@universal_record_locator)
+	def self.get_console_input(user_url)
+		
+		raise ArgumentError, "please put a URL together with the command to run the program" if user_url==[]
+		
+		consolidated_input = user_url.join(" ")
+		
+		@universal_record_locator = consolidated_input.slice(URI.regexp)
+
+		raise ArgumentError, "no valid URL, please try again with HTTP:// or HTTPS://" if @universal_record_locator==nil
+		
+		page = Nokogiri::HTML(open(@universal_record_locator))
+		
+		data = FrequencyAnalyzer.new(page)
 	end
+
 end
 
 
@@ -96,8 +101,8 @@ WebsiteFetcher.get_console_input($*)
 #####################
 
 # test page
-page = Nokogiri::HTML(open('http://www.robotstxt.org'))
-data = FrequencyAnalyzer.new(page)
+ page = Nokogiri::HTML(open(WebsiteFetcher.universal_record_locator))
+ data = FrequencyAnalyzer.new(page)
 
 def assert
 	raise 'assertion failed' unless yield

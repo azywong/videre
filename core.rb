@@ -6,17 +6,19 @@ class WebsiteFetcher
 	def self.get_console_input(user_url)
 		raise ArgumentError, "please put a URL together with the command to run the program" if user_url==[]
 		consolidated_input = user_url.join(" | ")
-		uri_strings = URI.extract(consolidated_input)    #raise ArgumentError, 'please put in a well formed URL'
+		p consolidated_input
+		uri_strings = URI.extract(consolidated_input, ['HTTP','HTTPS'])    #raise ArgumentError, 'please put in a well formed URL'
 		p uri_strings
 		raise ArgumentError, 'please only provide one URL' if uri_strings.length > 1
+		p uri_strings[0]
 		@universal_record_locator = uri_strings[0]
-		p @universal_record_locator
 	end
 
 	def self.send_to_html_parser
 		HTMLParser.kick_to_nokogiri(@universal_record_locator)
 	end
 end
+
 
 class FrequencyAnalyzer
 	def initialize(page)
@@ -26,7 +28,7 @@ class FrequencyAnalyzer
 	def link_count
 		@page.css("a").length
 	end
-	
+
 	def image_count
 		@page.css("img").length
 	end
@@ -46,7 +48,7 @@ class FrequencyAnalyzer
 	def comment_count
 		@page.css(".comment").length
 	end
-	
+
 	def list_count
 		@page.css("ul").length
 	end
@@ -59,31 +61,58 @@ class FrequencyAnalyzer
 		@page.css("table").length
 	end
 
-	# def count_tags
-	# 	keys = [:link, :image, :paragraph, :comment, :list, :list_item, :table_count]
-	# 	keys.each do |key|
-	# 		{key => }
-	# 	end
-	# 	# returns a hash
-	# 	# key: value, element_count: integer
-	# end
+
+	def count_tags
+		json_hash_output = {}
+		json_hash_output[:link] = link_count
+		json_hash_output[:image] = image_count
+		json_hash_output[:paragraph] = paragraph_count
+		json_hash_output[:header] = header_count
+		json_hash_output[:comment] = comment_count
+		json_hash_output[:list] = list_count
+		json_hash_output[:listitem] = list_item_count
+		json_hash_output[:table] = table_count
+		json_hash_output
+	end
+		# returns a hash
+		# key: value, element_count: integer
+
+
 end
 
-class Display
-	def self.console_output
-	end
+# class Display
+# 	def self.console_output
+# 	end
 
-	def self.js_spit_friendly
-		raise NoMethodError "not implemented in release 0"
-	end
-end
+# 	def self.js_spit_friendly
+# 		raise NoMethodError "not implemented in release 0"
+# 	end
+# end
 
 WebsiteFetcher.get_console_input($*)
+
+#####################
+##Testing############
+#####################
+
+# test page
+page = Nokogiri::HTML(open('http://www.huffingtonpost.com'))
+
+data = FrequencyAnalyzer.new(page)
+p data.link_count
+p data.image_count
+p data.paragraph_count
+p data.header_count
+p data.comment_count
+p data.list_count
+p data.list_item_count
+p data.table_count
+p data.count_tags
 
 def assert
 	raise 'assertion failed' unless yield
 end
 
-assert {WebsiteFetcher.get_console_input(['www.yahoo.com']) == 'www.yahoo.com'}
 assert {WebsiteFetcher.get_console_input(['purple busses','www.yahoo.com', 'marissa mayer']) == 'www.yahoo.com'}
 assert {WebsiteFetcher.get_console_input(['http://www.yahoo.com']) == 'http://www.yahoo.com'}
+assert {WebsiteFetcher.get_console_input(['www.yahoo.com']) == 'www.yahoo.com'}

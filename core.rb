@@ -7,7 +7,7 @@ class WebsiteFetcher
 		raise ArgumentError, "please put a URL together with the command to run the program" if user_url==[]
 		consolidated_input = user_url.join(" | ")
 		p consolidated_input
-		uri_strings = URI.extract(consolidated_input, ['HTTP','HTTPS'])    #raise ArgumentError, 'please put in a well formed URL'
+		uri_strings = URI.extract(consolidated_input) raise ArgumentError, 'please put in a URL using HTTP:// or HTTPS://'
 		p uri_strings
 		raise ArgumentError, 'please only provide one URL' if uri_strings.length > 1
 		p uri_strings[0]

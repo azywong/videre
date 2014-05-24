@@ -80,14 +80,14 @@ class FrequencyAnalyzer
 
 end
 
-# class Display
-# 	def self.console_output
-# 	end
+class Display
+	def self.console_output
+	end
 
-# 	def self.js_spit_friendly
-# 		raise NoMethodError "not implemented in release 0"
-# 	end
-# end
+	def self.js_spit_friendly
+		raise NoMethodError "not implemented in release 0"
+	end
+end
 
 WebsiteFetcher.get_console_input($*)
 
@@ -96,23 +96,26 @@ WebsiteFetcher.get_console_input($*)
 #####################
 
 # test page
-page = Nokogiri::HTML(open('http://www.huffingtonpost.com'))
-
+page = Nokogiri::HTML(open('http://www.robotstxt.org'))
 data = FrequencyAnalyzer.new(page)
-p data.link_count
-p data.image_count
-p data.paragraph_count
-p data.header_count
-p data.comment_count
-p data.list_count
-p data.list_item_count
-p data.table_count
-p data.count_tags
 
 def assert
 	raise 'assertion failed' unless yield
 end
 
-assert {WebsiteFetcher.get_console_input(['purple busses','www.yahoo.com', 'marissa mayer']) == 'www.yahoo.com'}
-assert {WebsiteFetcher.get_console_input(['http://www.yahoo.com']) == 'http://www.yahoo.com'}
-assert {WebsiteFetcher.get_console_input(['www.yahoo.com']) == 'www.yahoo.com'}
+# assert {WebsiteFetcher.get_console_input(['purple busses','www.yahoo.com', 'marissa mayer']) == 'www.yahoo.com'}
+# assert {WebsiteFetcher.get_console_input(['http://www.yahoo.com']) == 'http://www.yahoo.com'}
+# assert {WebsiteFetcher.get_console_input(['www.yahoo.com']) == 'www.yahoo.com'}
+
+# TESTING FrequencyAnalyzer
+assert {(data.link_count.is_a? Integer) == true}
+assert {(data.image_count.is_a? Integer) == true }
+assert {(data.paragraph_count.is_a? Integer) == true }
+assert {(data.header_count.is_a? Integer) == true }
+assert {(data.comment_count.is_a? Integer) == true }
+assert {(data.list_count.is_a? Integer) == true }
+assert {(data.list_item_count.is_a? Integer) == true }
+assert {(data.table_count.is_a? Integer) == true }
+assert {(data.count_tags.is_a? Hash) == true }
+
+p data.count_tags

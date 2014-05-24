@@ -4,17 +4,16 @@ require 'open-uri'
 
 class WebsiteFetcher
 	def self.get_console_input(user_url)
-		html_string = user_url.join(" | ")
-		uri_string = html_string.slice(URI.regexp)
+		raise ArgumentError, "please put a URL together with the command to run the program" if user_url==[]
+		consolidated_input = user_url.join(" | ")
+		uri_string = consolidated_input.slice(URI.regexp(['http','https']))
 		p uri_string
-		uri = URI.new(uri_string)
-		p uri.to_s
-		uri.to_s
-
+		uri = URI(uri_string)
+		@universal_record_locator = uri.to_s
 	end
 
 	def self.send_to_html_parser
-		HTMLParser.kick_to_nokogiri(univ_record_locator)
+		HTMLParser.kick_to_nokogiri(@universal_record_locator)
 	end
 end
 
@@ -31,7 +30,7 @@ class HTMLParser
 	end
 end
 
-class Frequency Analyzer
+class FrequencyAnalyzer
 	def initialize_containers
 		# some kind of storage for data
 		# list of all tags
@@ -77,3 +76,11 @@ class Display
 end
 
 WebsiteFetcher.get_console_input($*)
+
+def assert
+	raise 'assertion failed' unless yield
+end
+
+assert {WebsiteFetcher.get_console_input(['www.yahoo.com']) == 'www.yahoo.com'}
+assert {WebsiteFetcher.get_console_input(['purple busses','www.yahoo.com', 'marissa mayer']) == 'www.yahoo.com'}
+assert {WebsiteFetcher.get_console_input(['http://www.yahoo.com']) == 'http://www.yahoo.com'}

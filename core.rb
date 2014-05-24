@@ -46,7 +46,6 @@ class FrequencyAnalyzer
 
 	def paragraph_count
 		@page.css("p").length
-
 	end
 
 	def header_count
